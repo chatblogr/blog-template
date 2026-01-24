@@ -7,8 +7,8 @@ import { getBlog } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   const blog = await getBlog();
-  let title = blog.blogName;
-  let description = blog.blogName;
+  const title = blog.blogName;
+  const description = blog.description;
 
   return title
     ? {
