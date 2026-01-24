@@ -1,11 +1,10 @@
-// import localFont from "next/font/local";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { Theme } from "@radix-ui/themes";
 import { Metadata } from "next";
-import { SITENAME } from "@/constants";
 import Script from "next/script";
 import { Inter } from "next/font/google";
+import { getBlog } from "@/lib/utils";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -13,21 +12,29 @@ const inter = Inter({
   weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-export const metadata: Metadata = {
-  title: "Chat and Blog",
-  description: "Chat, Save and Publish a blog.",
-  openGraph: {
-    title: "Chat and Blog",
-    description: "Chat, Save and Publish a blog.",
-    url: `https://${SITENAME}`,
-    type: "website",
-    images: `https://${SITENAME}/images/facebook.png`,
-  },
-  twitter: {
-    card: "summary",
-    images: `https://${SITENAME}/images/twitter.png`,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const blog = await getBlog();
+  const title = blog.blogName;
+  const description = blog.description;
+  const customDomain = blog.customDomain;
+
+  return title
+    ? {
+        title,
+        description,
+        openGraph: {
+          title,
+          description,
+          url: customDomain,
+          type: "article",
+          images: `${customDomain}/images/blog_share.png`,
+        },
+        twitter: {
+          card: "summary",
+        },
+      }
+    : {};
+}
 
 export default function RootLayout({
   children,

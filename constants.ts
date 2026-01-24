@@ -1,2 +1,1 @@
-export const SITENAME = "yosunai.com";
-export const pat = "df9e3d96-9c81-49b2-ac75-e82098795769";
+export const pat = "8dc04598-b392-4eb9-9017-ff845fe75c8a";

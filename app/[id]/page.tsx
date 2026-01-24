@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { SITENAME } from "@/constants";
 import { ChatPage } from "@/components/blog/ChatPage";
 import { getBlog, getPost } from "@/lib/utils";
 
@@ -17,8 +16,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPost(params.id);
-  let title = post.title;
-  let description = post.messages?.[0]?.content || post.title;
+  const title = post.title;
+  const description = post.messages?.[0]?.content || post.title;
+  const customDomain = post.customDomain;
+
 
   return title
     ? {
@@ -27,9 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         openGraph: {
           title,
           description,
-          url: `https://${SITENAME}/${params.id}`,
+          url: `${customDomain}/${params.id}`,
           type: "article",
-          images: `https://${SITENAME}/images/blog_share.png`,
+          images: `${customDomain}/images/blog_share.png`,
         },
         twitter: {
           card: "summary",

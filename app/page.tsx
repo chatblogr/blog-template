@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { SITENAME } from "@/constants";
 import { BlogPage } from "@/components/blog/BlogPage";
 import { getBlog } from "@/lib/utils";
 
@@ -9,6 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const blog = await getBlog();
   const title = blog.blogName;
   const description = blog.description;
+  const customDomain = blog.customDomain;
 
   return title
     ? {
@@ -17,9 +17,9 @@ export async function generateMetadata(): Promise<Metadata> {
         openGraph: {
           title,
           description,
-          url: `https://${SITENAME}`,
+          url: customDomain,
           type: "article",
-          images: `https://${SITENAME}/images/blog_share.png`,
+          images: `${customDomain}/images/blog_share.png`,
         },
         twitter: {
           card: "summary",
