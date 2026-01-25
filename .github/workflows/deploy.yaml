@@ -12,7 +12,7 @@ on:
         required: false
         type: string
       fb_service_account:
-        description: 'Firebase Service Account (set in secrets)'
+        description: 'Firebase Service Account'
         required: false
         type: string
       fb_project_id:
