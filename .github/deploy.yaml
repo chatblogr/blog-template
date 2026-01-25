@@ -1,0 +1,66 @@
+name: Build and Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      pat:
+        description: 'ChatBlogr Access Token'
+        required: true
+        type: string
+      site_name:
+        description: 'Site Name'
+        required: false
+        type: string
+      fb_service_account:
+        description: 'Firebase Service Account (set in secrets)'
+        required: false
+        type: string
+      fb_project_id:
+        description: 'Firebase Project ID'
+        required: false
+        type: string
+        default: 'yosunai-hosting'
+      environment:
+        description: 'Deployment Environment'
+        required: false
+        type: string
+        default: 'production'
+      
+        
+jobs:
+  build-and-deploy:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate images
+        run: npm run resize
+
+      - name: Update manifest
+        run: npm run manifest
+        env:
+          SITE_NAME: ${{ github.event.inputs.site_name }}
+
+      - name: Build
+        run: npm run build
+        env:
+          CHATBLOGR_PAT: ${{ github.event.inputs.pat }}
+
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ github.event.inputs.fb_service_account }}'
+          channelId: live
+          projectId: '${{ github.event.inputs.fb_project_id }}'

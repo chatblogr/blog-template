@@ -1,4 +1,4 @@
-import { pat } from "@/constants";
+const pat = process.env.CHATBLOGR_PAT as string;
 
 export async function getBlog() {
   const res = await fetch("https://chatblogr.com/api/bypass/blog", {
