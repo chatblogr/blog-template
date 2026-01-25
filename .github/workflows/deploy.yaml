@@ -19,7 +19,6 @@ on:
         description: 'Firebase Project ID'
         required: false
         type: string
-        default: 'yosunai-hosting'
       environment:
         description: 'Deployment Environment'
         required: false
