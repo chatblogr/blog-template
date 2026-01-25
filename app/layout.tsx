@@ -37,11 +37,12 @@ export async function generateMetadata(): Promise<Metadata> {
     : {};
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { analyticsId } = await getBlog();
   return (
     <html lang="en">
       <head>
@@ -69,19 +70,23 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={`${inter.variable} antialiased`}>
-        <Script
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-HPND068965"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
+        {analyticsId && (
+          <>
+            <Script
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`}
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', 'G-HPND068965');
+            gtag('config', '${analyticsId}');
           `}
-        </Script>
+            </Script>
+          </>
+        )}
         <Theme>{children}</Theme>
       </body>
     </html>
