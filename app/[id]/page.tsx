@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { ChatPage } from "@/components/blog/ChatPage";
 import { getBlog, getPost } from "@/lib/utils";
 
-type Props = {
-  params: { id: string };
-};
+type Props = Promise<{
+  id: string;
+}>;
 
 export async function generateStaticParams() {
   const { posts } = await getBlog();
@@ -14,12 +14,12 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await getPost(params.id);
+export async function generateMetadata({ params } : { params: Props }): Promise<Metadata> {
+  const id = (await params).id;
+  const post = await getPost(id);
   const title = post.title;
   const description = post.messages?.[0]?.content || post.title;
   const customDomain = post.customDomain;
-
 
   return title
     ? {
@@ -28,21 +28,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         openGraph: {
           title,
           description,
-          url: `${customDomain}/${params.id}`,
+          url: `${customDomain}/${id}`,
           type: "article",
-          images: `${customDomain}/images/blog_share.png`,
+          images: `${customDomain}/images/facebook.png`,
         },
         twitter: {
           card: "summary",
+          images: `${customDomain}/images/twitter.png`,
         },
       }
     : {};
 }
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+export default async function Page({ params }: { params: Props }) {
   const post = await getPost((await params).id);
-  return (
-    <ChatPage {...post}
-    />
-  );
+  return <ChatPage {...post} />;
 }

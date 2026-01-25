@@ -1,7 +1,6 @@
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { Theme } from "@radix-ui/themes";
-import { Metadata } from "next";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import { getBlog } from "@/lib/utils";
@@ -12,30 +11,6 @@ const inter = Inter({
   weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  const blog = await getBlog();
-  const title = blog.blogName;
-  const description = blog.description;
-  const customDomain = blog.customDomain;
-
-  return title
-    ? {
-        title,
-        description,
-        openGraph: {
-          title,
-          description,
-          url: customDomain,
-          type: "article",
-          images: `${customDomain}/images/facebook.png`,
-        },
-        twitter: {
-          card: "summary",
-          images: `${customDomain}/images/twitter.png`,
-        },
-      }
-    : {};
-}
 
 export default async function RootLayout({
   children,

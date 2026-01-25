@@ -19,10 +19,11 @@ export async function generateMetadata(): Promise<Metadata> {
           description,
           url: customDomain,
           type: "article",
-          images: `${customDomain}/images/blog_share.png`,
+          images: `${customDomain}/images/facebook.png`,
         },
         twitter: {
           card: "summary",
+          images: `${customDomain}/images/twitter.png`,
         },
       }
     : {};
