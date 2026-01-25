@@ -78,12 +78,12 @@ export default async function RootLayout({
             />
             <Script id="google-analytics" strategy="afterInteractive">
               {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
 
-            gtag('config', '${analyticsId}');
-          `}
+                gtag('config', '${analyticsId}');
+              `}
             </Script>
           </>
         )}
