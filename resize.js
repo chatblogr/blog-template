@@ -28,7 +28,11 @@ const fileConfigs = [
   },
   {
     fileName: "twitter.png",
-    size: 800,
+    size: 1024,
+  },
+  {
+    fileName: "facebook.png",
+    size: 1024,
   }
 ];
 
