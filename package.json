@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "rm -rf .next && next build && firebase deploy"
+    "deploy": "rm -rf .next out && next build && firebase deploy"
   },
   "dependencies": {
     "axios": "^1.7.7",
