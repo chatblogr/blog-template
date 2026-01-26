@@ -11,8 +11,8 @@ on:
         description: 'Site Name'
         required: false
         type: string
-      fb_service_account:
-        description: 'Firebase Service Account'
+      fb_service_account_url:
+        description: 'Firebase Service Account URL'
         required: false
         type: string
       fb_project_id:
@@ -56,10 +56,23 @@ jobs:
         env:
           CHATBLOGR_PAT: ${{ github.event.inputs.pat }}
 
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: 'Read file from Bucket'
+        id: read_file
+        run: |
+          # Download the file
+          gsutil cp ${{ github.event.inputs.fb_service_account_url }} ./config.json
+          
+          echo "file_content<<EOF" >> $GITHUB_OUTPUT
+          cat ./config.json >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ github.event.inputs.fb_service_account }}'
+          firebaseServiceAccount: '${{ steps.read_file.outputs.file_content }}'
           channelId: live
           projectId: '${{ github.event.inputs.fb_project_id }}'
