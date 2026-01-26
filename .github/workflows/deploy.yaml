@@ -56,14 +56,11 @@ jobs:
         env:
           CHATBLOGR_PAT: ${{ github.event.inputs.pat }}
 
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v2'
-
       - name: 'Read file from Bucket'
         id: read_file
         run: |
           # Download the file
-          gsutil cp ${{ github.event.inputs.fb_service_account_url }} ./config.json
+          curl -L ${{ github.event.inputs.fb_service_account_url }} -o ./config.json
           
           echo "file_content<<EOF" >> $GITHUB_OUTPUT
           cat ./config.json >> $GITHUB_OUTPUT
