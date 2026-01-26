@@ -60,7 +60,7 @@ jobs:
         id: read_file
         run: |
           # Download the file
-          curl -L ${{ github.event.inputs.fb_service_account_url }} -o ./config.json
+          curl -L "${{ github.event.inputs.fb_service_account_url }}" -o ./config.json
           
           echo "file_content<<EOF" >> $GITHUB_OUTPUT
           cat ./config.json >> $GITHUB_OUTPUT
