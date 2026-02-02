@@ -33,13 +33,22 @@ const fileConfigs = [
   {
     fileName: "facebook.png",
     size: 1024,
-  }
+  },
 ];
 
 const inputImagePath = "./public/images/base.png";
 const outputDir = "./public/images";
 
 async function resizeImage(fileName, size) {
+  // Download image from environment variable URL if provided
+  if (process.env.IMAGE_URL) {
+    const response = await fetch(process.env.IMAGE_URL);
+    const buffer = await response.arrayBuffer();
+    await sharp(Buffer.from(buffer)).toFile(inputImagePath);
+  } else {
+    return;
+  }
+
   const outputPath = path.join(outputDir, fileName);
   try {
     await sharp(inputImagePath)
@@ -58,4 +67,3 @@ async function resizeImage(fileName, size) {
 fileConfigs.forEach(({ fileName, size }) => {
   resizeImage(fileName, size);
 });
-

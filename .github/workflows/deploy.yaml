@@ -45,6 +45,8 @@ jobs:
 
       - name: Generate images
         run: npm run resize
+        env:
+          IMAGE_URL: ${{ github.event.inputs.image_url }}
 
       - name: Update manifest
         run: npm run manifest
