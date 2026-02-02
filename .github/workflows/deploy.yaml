@@ -19,6 +19,10 @@ on:
         description: 'Firebase Project ID'
         required: false
         type: string
+      image_url:
+        description: 'Base Image URL for Social Media'
+        required: false
+        type: string
       environment:
         description: 'Deployment Environment'
         required: false
