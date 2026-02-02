@@ -36,7 +36,7 @@ const fileConfigs = [
   },
 ];
 
-const inputImagePath = "./public/images/base.png";
+let inputImagePath = "./public/images/base.png";
 const outputDir = "./public/images";
 
 async function resizeImage(fileName, size) {
@@ -44,7 +44,12 @@ async function resizeImage(fileName, size) {
   if (process.env.IMAGE_URL) {
     const response = await fetch(process.env.IMAGE_URL);
     const buffer = await response.arrayBuffer();
+    // get file extension from image_url
+    const url = new URL(process.env.IMAGE_URL);
+    const fileExtension = path.extname(url.pathname);
+    inputImagePath = inputImagePath.replace(".png", fileExtension);
     await sharp(Buffer.from(buffer)).toFile(inputImagePath);
+    console.log("Downloaded base image from URL");
   } else {
     return;
   }
