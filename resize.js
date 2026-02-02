@@ -23,10 +23,6 @@ const fileConfigs = [
     size: 32,
   },
   {
-    fileName: "favicon.ico",
-    size: 48,
-  },
-  {
     fileName: "twitter.png",
     size: 1024,
   },
@@ -57,6 +53,7 @@ async function resizeImage(fileName, size) {
   const outputPath = path.join(outputDir, fileName);
   try {
     await sharp(inputImagePath)
+      .png()
       .resize(size, size, {
         fit: "cover",
         position: "center",
