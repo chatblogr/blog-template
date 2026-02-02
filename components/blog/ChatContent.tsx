@@ -17,7 +17,7 @@ export function ChatContent({
         <span className="font-bold text-red-400 text-2xl">{title}</span>
       </div>
       <div
-        className="py-6"
+        className="py-6 message"
         dangerouslySetInnerHTML={{ __html: md.render(content ?? "No content") }}
       />
     </div>
