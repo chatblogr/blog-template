@@ -20,7 +20,7 @@ export function BlogPage({ blogName, posts }: { posts: BlogPost[], blogName: str
                 key={chat.chatId}
                 href={`/${chat.chatId}`}
               >
-                <div className="mx-6 pb-8 border-b-3 border-gray-300">
+                <div className="mx-6 pb-8 border-b border-gray-300">
                   <h2 className="text-2xl font-bold text-blue-500">
                     {chat.title}
                   </h2>
@@ -31,6 +31,7 @@ export function BlogPage({ blogName, posts }: { posts: BlogPost[], blogName: str
                   )}
                   <p className="text-gray-600 text-md mt-4">
                     <div
+                      className="message"
                       dangerouslySetInnerHTML={{
                         __html: md.render(chat.description ?? ""),
                       }}
