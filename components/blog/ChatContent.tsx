@@ -24,7 +24,7 @@ export function ChatContent({
         >
           <ArrowLeft className="h-6 w-6 text-gray-600" />
         </button>
-        <span className="font-bold text-gray-700 text-2xl">{title}</span>
+        <span className="font-bold text-black text-4xl">{title}</span>
       </div>
       <div
         className="py-6 message"
