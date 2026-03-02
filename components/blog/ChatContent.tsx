@@ -1,5 +1,7 @@
 import { Message } from "@/types";
 import { md } from "./md";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function ChatContent({
   messages,
@@ -8,12 +10,20 @@ export function ChatContent({
   messages: Message[];
   title: string;
 }) {
+  const router = useRouter();
   const content = messages.filter((msg) => msg.role === "assistant")?.[0]
     ?.content;
 
   return (
     <div className="px-6 pt-4">
-      <div className="py-2 border-b-3 border-gray-200">
+      <div className="py-2 border-b-3 border-gray-200 flex items-center">
+        <button
+          onClick={() => router.push("/")}
+          className="mr-3 p-1 rounded hover:bg-gray-200"
+          aria-label="Back to home"
+        >
+          <ArrowLeft className="h-6 w-6 text-gray-600" />
+        </button>
         <span className="font-bold text-red-400 text-2xl">{title}</span>
       </div>
       <div
