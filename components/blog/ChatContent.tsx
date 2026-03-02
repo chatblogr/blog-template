@@ -16,7 +16,7 @@ export function ChatContent({
 
   return (
     <div className="px-6 pt-4">
-      <div className="py-2 border-b border-gray-200 flex items-center">
+      <div className="py-2 border-b border-gray-300 flex items-center">
         <button
           onClick={() => router.push("/")}
           className="mr-3 p-1 rounded hover:bg-gray-200"
