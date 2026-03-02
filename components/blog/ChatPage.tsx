@@ -16,7 +16,7 @@ export function ChatPage({
 }) {
   return (
     <Layout blogName={blogName}>
-      <div className="max-w-[640px] w-full mx-auto">
+      <div className="max-w-[768px] w-full mx-auto">
         <ChatContent messages={messages} title={title} />
       </div>
     </Layout>
