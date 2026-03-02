@@ -20,7 +20,7 @@ export function BlogPage({ blogName, posts }: { posts: BlogPost[], blogName: str
                 key={chat.chatId}
                 href={`/${chat.chatId}`}
               >
-                <div className="mx-6 pb-8 border-b border-gray-300">
+                <div className="mx-6 border-b border-gray-300">
                   <h2 className="text-2xl font-bold text-blue-500">
                     {chat.title}
                   </h2>
