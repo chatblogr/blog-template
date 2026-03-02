@@ -14,7 +14,7 @@ export function BlogPage({ blogName, posts }: { posts: BlogPost[], blogName: str
         <p className="text-red-500">No posts available.</p>
       ) : (
         <>
-          <div className="w-full max-w-[640px] mx-auto flex flex-col gap-6 cursor-pointer pt-6">
+          <div className="w-full max-w-[768px] mx-auto flex flex-col gap-6 cursor-pointer pt-6">
             {posts.map((chat) => (
               <Link
                 key={chat.chatId}
