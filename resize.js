@@ -35,21 +35,21 @@ const fileConfigs = [
 let inputImagePath = "./public/images/base.png";
 const outputDir = "./public/images";
 
+if (process.env.IMAGE_URL) {
+  const response = await fetch(process.env.IMAGE_URL);
+  const buffer = await response.arrayBuffer();
+  // get file extension from image_url
+  const url = new URL(process.env.IMAGE_URL);
+  const fileExtension = path.extname(url.pathname);
+  inputImagePath = inputImagePath.replace(".png", fileExtension);
+  await sharp(Buffer.from(buffer)).toFile(inputImagePath);
+  console.log("Downloaded base image from URL");
+} else {
+  process.exit(0);
+}
+
 async function resizeImage(fileName, size) {
   // Download image from environment variable URL if provided
-  if (process.env.IMAGE_URL) {
-    const response = await fetch(process.env.IMAGE_URL);
-    const buffer = await response.arrayBuffer();
-    // get file extension from image_url
-    const url = new URL(process.env.IMAGE_URL);
-    const fileExtension = path.extname(url.pathname);
-    inputImagePath = inputImagePath.replace(".png", fileExtension);
-    await sharp(Buffer.from(buffer)).toFile(inputImagePath);
-    console.log("Downloaded base image from URL");
-  } else {
-    return;
-  }
-
   const outputPath = path.join(outputDir, fileName);
   try {
     await sharp(inputImagePath)
@@ -66,6 +66,9 @@ async function resizeImage(fileName, size) {
   }
 }
 
-fileConfigs.forEach(({ fileName, size }) => {
-  resizeImage(fileName, size);
-});
+// use an async IIFE to allow for-await looping
+(async () => {
+  for (const { fileName, size } of fileConfigs) {
+    await resizeImage(fileName, size);
+  }
+})();
