@@ -8,9 +8,10 @@ type Props = Promise<{
 }>;
 
 export async function generateStaticParams() {
-  const { posts } = await getBlog();
+  const blog = await getBlog();
+  console.log("Generating static params for posts:", blog);
 
-  return posts.flatMap((post: { slug: string; redirects: string[] }) => {
+  return blog.posts.flatMap((post: { slug: string; redirects: string[] }) => {
     const posts = [];
     if (post.redirects) {
       posts.push(
