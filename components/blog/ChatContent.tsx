@@ -4,9 +4,13 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function ChatContent({
-  content
+  content,
+  title,
+  description
 }: {
+  title: string;
   content: string;
+  description?: string;
 }) {
   const router = useRouter();
 
@@ -20,7 +24,11 @@ export function ChatContent({
         >
           <ArrowLeft className="h-6 w-6 text-gray-600" />
         </button>
+        <span className="font-bold text-black text-4xl">{title}</span>
       </div>
+      <p className="italic text-gray-600 mt-2 mb-6">
+        {description}
+      </p>
       <div
         className="py-6 message"
         dangerouslySetInnerHTML={{ __html: md.render(content ?? "No content") }}
