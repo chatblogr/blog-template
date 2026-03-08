@@ -9,8 +9,7 @@ type Props = Promise<{
 
 export async function generateStaticParams() {
   const blog = await getBlog();
-  console.log("Generating static params for posts:", blog);
-
+  
   return blog.posts.flatMap((post: { slug: string; redirects: string[] }) => {
     const posts = [];
     if (post.redirects) {
@@ -63,7 +62,7 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Props }) {
   const post = await getPost((await params).id);
   if (post.redirect) {
-    redirect(post.redirect);
+    redirect("/" + post.redirect);
   }
   return <ChatPage {...post} />;
 }
