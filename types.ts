@@ -48,4 +48,5 @@ export type BlogPost = {
   title: string;
   description: string;
   updatedTime?: number;
+  slug: string;
 }

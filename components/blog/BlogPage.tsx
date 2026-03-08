@@ -15,25 +15,25 @@ export function BlogPage({ blogName, posts }: { posts: BlogPost[], blogName: str
       ) : (
         <>
           <div className="w-full max-w-[768px] mx-auto flex flex-col gap-6 cursor-pointer pt-6">
-            {posts.map((chat) => (
+            {posts.map((post) => (
               <Link
-                key={chat.chatId}
-                href={`/${chat.chatId}`}
+                key={post.slug}
+                href={`/${post.slug}`}
               >
                 <div className="mx-6 border-b border-gray-300">
                   <h2 className="text-2xl font-bold text-blue-500">
-                    {chat.title}
+                    {post.title}
                   </h2>
-                  {chat.updatedTime && (
+                  {post.updatedTime && (
                     <p className="text-gray-600 text-sm">
-                      Updated: {new Date(chat.updatedTime).toLocaleString()}
+                      Updated: {new Date(post.updatedTime).toLocaleString()}
                     </p>
                   )}
                   <p className="text-gray-600 text-md mt-4">
                     <div
                       className="message"
                       dangerouslySetInnerHTML={{
-                        __html: md.render(chat.description ?? ""),
+                        __html: md.render(post.description ?? ""),
                       }}
                     />
                   </p>
