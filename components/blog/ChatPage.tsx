@@ -7,17 +7,15 @@ import { Message } from "@/types";
 
 export function ChatPage({
   blogName,
-  messages,
-  title
+  content,
 }: {
   blogName: string;
-  messages: Message[];
-  title: string;
+  content: string;
 }) {
   return (
     <Layout blogName={blogName}>
       <div className="max-w-[768px] w-full mx-auto">
-        <ChatContent messages={messages} title={title} />
+        <ChatContent content={content} />
       </div>
     </Layout>
   );

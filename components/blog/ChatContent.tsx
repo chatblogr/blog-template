@@ -4,15 +4,11 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function ChatContent({
-  messages,
-  title,
+  content
 }: {
-  messages: Message[];
-  title: string;
+  content: string;
 }) {
   const router = useRouter();
-  const content = messages.filter((msg) => msg.role === "assistant")?.[0]
-    ?.content;
 
   return (
     <div className="px-6 pt-4">
@@ -24,7 +20,6 @@ export function ChatContent({
         >
           <ArrowLeft className="h-6 w-6 text-gray-600" />
         </button>
-        <span className="font-bold text-black text-4xl">{title}</span>
       </div>
       <div
         className="py-6 message"
