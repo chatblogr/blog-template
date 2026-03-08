@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { ChatPage } from "@/components/blog/ChatPage";
 import { getBlog, getPost } from "@/lib/utils";
 
@@ -9,14 +10,32 @@ type Props = Promise<{
 export async function generateStaticParams() {
   const { posts } = await getBlog();
 
-  return posts.map((post: { chatId: string }) => ({
-    id: post.chatId,
-  }));
+  return posts.flatMap((post: { slug: string; redirects: string[] }) => {
+    const posts = [];
+    if (post.redirects) {
+      posts.push(
+        ...post.redirects.map((redirect) => ({
+          id: redirect,
+        })),
+      );
+    }
+    posts.push({
+      id: post.slug,
+    });
+    return posts;
+  });
 }
 
-export async function generateMetadata({ params } : { params: Props }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Props;
+}): Promise<Metadata> {
   const id = (await params).id;
   const post = await getPost(id);
+  if (post.redirect) {
+    return {};
+  }
   const title = post.title;
   const description = post.messages?.[0]?.content || post.title;
   const customDomain = post.customDomain;
@@ -42,5 +61,8 @@ export async function generateMetadata({ params } : { params: Props }): Promise<
 
 export default async function Page({ params }: { params: Props }) {
   const post = await getPost((await params).id);
+  if (post.redirect) {
+    redirect(post.redirect);
+  }
   return <ChatPage {...post} />;
 }
