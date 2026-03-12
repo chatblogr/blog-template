@@ -15,6 +15,16 @@ export function Layout({ children, blogName }: PropsWithChildren<LayoutProps>) {
         </Link>
       </div>
       <main className="px-0 pt-20 pb-4">{children}</main>
+      <div className="bg-black text-white text-center py-4 mt-6">
+        <span className="text-gray-300">Made with </span>
+        <a
+          href="https://chatblogr.com"
+          target="_blank"
+          className="hover:border-b border-white"
+        >
+          chatblogr.com
+        </a>
+      </div>
     </div>
   );
 }
