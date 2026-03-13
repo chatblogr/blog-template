@@ -14,6 +14,9 @@ export async function generateMetadata(): Promise<Metadata> {
     ? {
         title,
         description,
+        alternates: {
+          canonical: customDomain,
+        },
         openGraph: {
           title,
           description,

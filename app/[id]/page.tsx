@@ -44,6 +44,9 @@ export async function generateMetadata({
     ? {
         title,
         description,
+        alternates: {
+          canonical: `${customDomain}/${id}`,
+        },
         openGraph: {
           title,
           description,
