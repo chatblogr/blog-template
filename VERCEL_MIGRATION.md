@@ -26,7 +26,7 @@
 ```bash
 npm install
 ```
-The Vercel CLI is now included as a dev dependency in the project.
+The Vercel CLI will be automatically downloaded when using `npx vercel` commands.
 
 ### 2. Get Your Vercel Credentials
 Create a Vercel project at [vercel.com/new](https://vercel.com/new), then find your credentials:
@@ -81,11 +81,6 @@ rm -rf .firebase
 Remove firebase-tools from dependencies:
 ```bash
 npm uninstall firebase-tools
-```
-
-Remove globally installed Vercel CLI (if previously installed globally):
-```bash
-npm uninstall --global vercel
 ```
 
 ## Benefits of Vercel

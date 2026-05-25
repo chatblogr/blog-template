@@ -61,13 +61,10 @@ jobs:
         env:
           SITE_NAME: ${{ github.event.inputs.site_name }}
 
-      - name: Build
-        run: npm run build
+      - name: Build with Vercel
+        run: npx vercel build
         env:
           CHATBLOGR_PAT: ${{ github.event.inputs.pat }}
-
-      - name: Install Vercel CLI
-        run: npm install --save-dev vercel@latest
 
       - name: Deploy to Vercel
         id: deploy
