@@ -93,9 +93,9 @@ npm uninstall firebase-tools
 
 ## Notes
 
-- The Next.js config already has `output: "export"` which works perfectly with Vercel
-- Static site generation is preserved
+- The Next.js config now uses dynamic deployment (removed `output: "export"`)
 - Trailing slash behavior is maintained via vercel.json
 - All existing functionality remains the same
-- The GitHub workflow now uses direct deployment without requiring `vercel pull`
+- The GitHub workflow uses `vercel build` and `vercel deploy --prebuilt` for efficient deployment
 - You don't need to run `vercel link` locally - just provide the IDs as workflow inputs
+- Dynamic deployment is better for Next.js apps with dynamic routes like `[id]`

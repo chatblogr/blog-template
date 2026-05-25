@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "rm -rf .next out && next build && npx vercel --prod",
+    "deploy": "rm -rf .next .vercel && npx vercel --prod",
     "resize": "node ./resize.js",
     "manifest": "node ./manifest.js"
   },
