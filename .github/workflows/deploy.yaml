@@ -68,7 +68,7 @@ jobs:
           VERCEL_ORG_ID: ${{ github.event.inputs.vercel_org_id }}
           VERCEL_PROJECT_ID: ${{ github.event.inputs.vercel_project_id }}
 
-      - name: Build with Vercel
+      - name: Build with Vercel (includes generated files)
         run: |
           if [ "${{ github.event.inputs.environment }}" == "production" ]; then
             npx vercel build --prod
