@@ -69,7 +69,12 @@ jobs:
           VERCEL_PROJECT_ID: ${{ github.event.inputs.vercel_project_id }}
 
       - name: Build with Vercel
-        run: npx vercel build
+        run: |
+          if [ "${{ github.event.inputs.environment }}" == "production" ]; then
+            npx vercel build --prod
+          else
+            npx vercel build
+          fi
         env:
           CHATBLOGR_PAT: ${{ github.event.inputs.pat }}
           VERCEL_TOKEN: ${{ github.event.inputs.vercel_token }}
