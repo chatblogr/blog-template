@@ -82,4 +82,4 @@ jobs:
           VERCEL_PROJECT_ID: ${{ github.event.inputs.vercel_project_id }}
 
       - name: Output Deployment URL
-        run: echo "Deployment URL: ${{ steps.deploy.outputs.url }}"
+        run: echo "Deployment URL ${{ steps.deploy.outputs.url }}"
