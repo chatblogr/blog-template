@@ -11,29 +11,33 @@ on:
         description: 'Site Name'
         required: false
         type: string
-      fb_service_account_url:
-        description: 'Firebase Service Account URL'
-        required: false
-        type: string
-      fb_project_id:
-        description: 'Firebase Project ID'
-        required: false
-        type: string
       image_url:
         description: 'Base Image URL for Social Media'
         required: false
         type: string
       environment:
-        description: 'Deployment Environment'
+        description: 'Deployment Environment (production or preview)'
         required: false
         type: string
         default: 'production'
+      vercel_org_id:
+        description: 'Vercel Organization ID'
+        required: true
+        type: string
+      vercel_project_id:
+        description: 'Vercel Project ID'
+        required: true
+        type: string
+      vercel_token:
+        description: 'Vercel Token'
+        required: true
+        type: string
       
         
 jobs:
   build-and-deploy:
-    runs-on: macos-latest
-    
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -62,20 +66,20 @@ jobs:
         env:
           CHATBLOGR_PAT: ${{ github.event.inputs.pat }}
 
-      - name: 'Read file from Bucket'
-        id: read_file
-        run: |
-          # Download the file
-          curl -L "${{ github.event.inputs.fb_service_account_url }}" -o ./config.json
-          
-          echo "file_content<<EOF" >> $GITHUB_OUTPUT
-          cat ./config.json >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+      - name: Install Vercel CLI
+        run: npm install --save-dev vercel@latest
 
-      - name: Deploy to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ steps.read_file.outputs.file_content }}'
-          channelId: live
-          projectId: '${{ github.event.inputs.fb_project_id }}'
+      - name: Deploy to Vercel
+        id: deploy
+        run: |
+          if [ "${{ github.event.inputs.environment }}" == "production" ]; then
+            npx vercel deploy --prod --token=${{ github.event.inputs.vercel_token }}
+          else
+            npx vercel deploy --token=${{ github.event.inputs.vercel_token }}
+          fi
+        env:
+          VERCEL_ORG_ID: ${{ github.event.inputs.vercel_org_id }}
+          VERCEL_PROJECT_ID: ${{ github.event.inputs.vercel_project_id }}
+
+      - name: Output Deployment URL
+        run: echo "Deployment URL: ${{ steps.deploy.outputs.url }}"

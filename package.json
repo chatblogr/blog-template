@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "rm -rf .next out && next build && firebase deploy",
+    "deploy": "rm -rf .next out && next build && npx vercel --prod",
     "resize": "node ./resize.js",
     "manifest": "node ./manifest.js"
   },
@@ -38,6 +38,7 @@
     "eslint-config-next": "16.1.4",
     "firebase-tools": "^15.4.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vercel": "^41.0.0"
   }
 }
