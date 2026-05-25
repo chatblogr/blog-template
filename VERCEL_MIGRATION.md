@@ -4,21 +4,29 @@
 
 ### 1. GitHub Workflow ([.github/workflows/deploy.yaml](.github/workflows/deploy.yaml))
 - **Removed**: Firebase-specific inputs and deployment steps
-- **Added**: Vercel CLI installation and deployment steps
+- **Removed**: `vercel pull` and `vercel build` steps (Vercel handles build automatically)
 - **Changed**: Runner from `macos-latest` to `ubuntu-latest` (cost optimization)
-- **New Inputs**:
+- **Added**: `--build-env CHATBLOGR_PAT` flag to deploy command for build-time access
+- **Simplified**: Direct deployment with Vercel handling the build
+- **Inputs**:
+  - `pat`: ChatBlogr API token (passed as build environment variable)
+  - `site_name`: Site name (for local manifest generation)
+  - `image_url`: Base image URL for social media (for local image generation)
   - `environment`: Deployment environment (production or preview)
   - `vercel_org_id`: Vercel Organization ID
   - `vercel_project_id`: Vercel Project ID
   - `vercel_token`: Vercel authentication token
 
 ### 2. Deployment Scripts ([package.json](package.json))
-- **Changed**: `deploy` script from `firebase deploy` to `vercel --prod`
+- **Changed**: `deploy` script to use Vercel deployment
 
 ### 3. Configuration Files
 - **Created**: [vercel.json](vercel.json) - Vercel configuration with trailing slash and clean URLs
 - **Removed**: [firebase.json](firebase.json) - No longer needed (can be deleted)
 - **Created**: [.env.example](.env.example) - Environment variables template
+
+### 4. Next.js Config ([next.config.ts](next.config.ts))
+- **Removed**: `output: "export"` for dynamic deployment
 
 ## Setup Requirements
 
@@ -34,7 +42,7 @@ Create a Vercel project at [vercel.com/new](https://vercel.com/new), then find y
 - Copy the **Project ID**
 - For **Organization ID**: Check your browser URL when viewing the project, or use Vercel CLI: `npx vercel teams ls`
 
-### 3. Get Your Vercel Token
+### 3. Configure Workflow
 Generate a Vercel token at [vercel.com/account/tokens](https://vercel.com/account/tokens):
 - Click "Create Token"
 - Give it a name (e.g., "GitHub Actions Deploy")
@@ -42,7 +50,7 @@ Generate a Vercel token at [vercel.com/account/tokens](https://vercel.com/accoun
 
 ### 4. Configure Workflow
 When running the workflow, provide the following:
-- `pat`: Your ChatBlogr API token (required)
+- `pat`: Your ChatBlogr API token (required) - passed as build environment variable
 - `site_name`: Your site name
 - `image_url`: Base image URL for social media
 - `environment`: `production` or `preview` (default: production)
@@ -50,12 +58,7 @@ When running the workflow, provide the following:
 - `vercel_project_id`: Your Vercel project ID (required)
 - `vercel_token`: Your Vercel token (required)
 
-## Environment Variables
-
-Add the following environment variables in your Vercel project settings:
-- `CHATBLOGR_PAT`: Your ChatBlogr API token
-- `SITE_NAME`: Your site name
-- `IMAGE_URL`: Base image URL for social media
+**Note**: `CHATBLOGR_PAT` is passed via the `--build-env` flag during deployment, so Vercel can access it during the build process.
 
 ## Local Development
 
@@ -96,6 +99,8 @@ npm uninstall firebase-tools
 - The Next.js config now uses dynamic deployment (removed `output: "export"`)
 - Trailing slash behavior is maintained via vercel.json
 - All existing functionality remains the same
-- The GitHub workflow uses `vercel build` and `vercel deploy --prebuilt` for efficient deployment
+- The GitHub workflow is simplified - Vercel handles the build automatically during deployment
 - You don't need to run `vercel link` locally - just provide the IDs as workflow inputs
 - Dynamic deployment is better for Next.js apps with dynamic routes like `[id]`
+- `CHATBLOGR_PAT` is passed via `--build-env` flag during deployment for build-time access
+- Note: Generated images and manifest changes are local and won't be committed to the repository
