@@ -62,9 +62,11 @@ jobs:
           SITE_NAME: ${{ github.event.inputs.site_name }}
 
       - name: Build with Vercel
-        run: npx vercel build
+        run: npx vercel build --token=${{ github.event.inputs.vercel_token }}
         env:
           CHATBLOGR_PAT: ${{ github.event.inputs.pat }}
+          VERCEL_ORG_ID: ${{ github.event.inputs.vercel_org_id }}
+          VERCEL_PROJECT_ID: ${{ github.event.inputs.vercel_project_id }}
 
       - name: Deploy to Vercel
         id: deploy
