@@ -61,6 +61,13 @@ jobs:
         env:
           SITE_NAME: ${{ github.event.inputs.site_name }}
 
+      - name: Pull Vercel Project Settings
+        run: npx vercel pull --yes --environment=${{ github.event.inputs.environment }}
+        env:
+          VERCEL_TOKEN: ${{ github.event.inputs.vercel_token }}
+          VERCEL_ORG_ID: ${{ github.event.inputs.vercel_org_id }}
+          VERCEL_PROJECT_ID: ${{ github.event.inputs.vercel_project_id }}
+
       - name: Build with Vercel
         run: npx vercel build
         env:
