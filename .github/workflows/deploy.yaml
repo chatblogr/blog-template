@@ -61,13 +61,33 @@ jobs:
         env:
           SITE_NAME: ${{ github.event.inputs.site_name }}
 
+      - name: Pull Vercel Project Settings
+        run: npx vercel pull --yes --environment=${{ github.event.inputs.environment }}
+        env:
+          VERCEL_TOKEN: ${{ github.event.inputs.vercel_token }}
+          VERCEL_ORG_ID: ${{ github.event.inputs.vercel_org_id }}
+          VERCEL_PROJECT_ID: ${{ github.event.inputs.vercel_project_id }}
+
+      - name: Build with Vercel
+        run: |
+          if [ "${{ github.event.inputs.environment }}" == "production" ]; then
+            npx vercel build --prod
+          else
+            npx vercel build
+          fi
+        env:
+          CHATBLOGR_PAT: ${{ github.event.inputs.pat }}
+          VERCEL_TOKEN: ${{ github.event.inputs.vercel_token }}
+          VERCEL_ORG_ID: ${{ github.event.inputs.vercel_org_id }}
+          VERCEL_PROJECT_ID: ${{ github.event.inputs.vercel_project_id }}
+
       - name: Deploy to Vercel
         id: deploy
         run: |
           if [ "${{ github.event.inputs.environment }}" == "production" ]; then
-            npx vercel deploy --prod --token=${{ github.event.inputs.vercel_token }} --build-env CHATBLOGR_PAT=${{ github.event.inputs.pat }}
+            npx vercel deploy --prod --prebuilt --token=${{ github.event.inputs.vercel_token }}
           else
-            npx vercel deploy --token=${{ github.event.inputs.vercel_token }} --build-env CHATBLOGR_PAT=${{ github.event.inputs.pat }}
+            npx vercel deploy --prebuilt --token=${{ github.event.inputs.vercel_token }}
           fi
         env:
           VERCEL_ORG_ID: ${{ github.event.inputs.vercel_org_id }}

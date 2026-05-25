@@ -4,12 +4,12 @@
 
 ### 1. GitHub Workflow ([.github/workflows/deploy.yaml](.github/workflows/deploy.yaml))
 - **Removed**: Firebase-specific inputs and deployment steps
-- **Removed**: `vercel pull` and `vercel build` steps (Vercel handles build automatically)
+- **Added**: `vercel pull` to fetch project settings
+- **Added**: `vercel build` to build locally with generated files
+- **Added**: `--prebuilt` flag to deploy prebuilt artifacts
 - **Changed**: Runner from `macos-latest` to `ubuntu-latest` (cost optimization)
-- **Added**: `--build-env CHATBLOGR_PAT` flag to deploy command for build-time access
-- **Simplified**: Direct deployment with Vercel handling the build
 - **Inputs**:
-  - `pat`: ChatBlogr API token (passed as build environment variable)
+  - `pat`: ChatBlogr API token (used during local build)
   - `site_name`: Site name (for local manifest generation)
   - `image_url`: Base image URL for social media (for local image generation)
   - `environment`: Deployment environment (production or preview)
@@ -99,8 +99,9 @@ npm uninstall firebase-tools
 - The Next.js config now uses dynamic deployment (removed `output: "export"`)
 - Trailing slash behavior is maintained via vercel.json
 - All existing functionality remains the same
-- The GitHub workflow is simplified - Vercel handles the build automatically during deployment
+- The workflow builds locally with `vercel build`, then deploys with `--prebuilt` flag
 - You don't need to run `vercel link` locally - just provide the IDs as workflow inputs
 - Dynamic deployment is better for Next.js apps with dynamic routes like `[id]`
-- `CHATBLOGR_PAT` is passed via `--build-env` flag during deployment for build-time access
-- Note: Generated images and manifest changes are local and won't be committed to the repository
+- `CHATBLOGR_PAT` is used during local build to fetch data
+- Generated images and manifest are built locally and included in the deployment
+- The build environment must match the deployment environment (production/preview)
