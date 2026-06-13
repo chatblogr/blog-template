@@ -28,9 +28,9 @@ export function BlogPage({
                     {post.title}
                   </h2>
                   {post.updatedTime && (
-                    <p className="text-gray-600 text-sm">
-                      Updated: {new Date(post.updatedTime).toLocaleString()}
-                    </p>
+                    <span className="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded">
+                      {new Date(post.updatedTime).toLocaleString()}
+                    </span>
                   )}
                   <p className="text-gray-600 text-md mt-4">
                     <div

@@ -9,9 +9,9 @@ interface LayoutProps {
 export function Layout({ children, blogName }: PropsWithChildren<LayoutProps>) {
   return (
     <div>
-      <div className="bg-gradient-to-r from-red-200 to-blue-300 px-6 rounded fixed h-20 flex items-center w-full z-50">
+      <div className="bg-slate-50 border-b border-gray-200 px-6 fixed h-20 flex items-center w-full z-50">
         <Link href={`/`}>
-          <h1 className="text-2xl font-bold">{blogName}</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">{blogName}</h1>
         </Link>
       </div>
       <main className="px-0 pt-20 pb-4">{children}</main>
