@@ -42,7 +42,9 @@ export function PostContent({
             </div>
           </div>
         )}
-        <span className="font-bold text-black text-4xl">{title}</span>
+        <span className="font-bold text-black text-xl min-[480px]:text-2xl lg:text-3xl">
+          {title}
+        </span>
       </div>
       <p className="italic text-gray-600 mt-2 mb-6">
         {description}
