@@ -56,6 +56,8 @@ export async function generateMetadata({
         },
         twitter: {
           card: "summary",
+          title,
+          description,
           images: `${customDomain}/images/twitter.png`,
         },
       }
