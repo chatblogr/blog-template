@@ -4,6 +4,7 @@ import { Theme } from "@radix-ui/themes";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import { getBlog } from "@/lib/utils";
+import { Metadata } from "next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,6 +12,12 @@ const inter = Inter({
   weight: ["300", "400", "500", "600", "700", "800"],
 });
 
+
+export const metadata: Metadata = {
+  verification: {
+    google: 'ca-pub-9511460585027038',
+  },
+};
 
 export default async function RootLayout({
   children,
@@ -25,7 +32,7 @@ export default async function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1.0"
         ></meta>
-        <Script
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9511460585027038"
           crossOrigin="anonymous"
