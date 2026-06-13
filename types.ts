@@ -41,6 +41,8 @@ export type Blog = {
   blogHandle: string;
   blogName: string;
   defaultVisibility?: boolean;
+  analyticsId?: string;
+  adsenseId?: string;
 }
 
 export type BlogPost = {
