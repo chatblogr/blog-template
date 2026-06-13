@@ -71,9 +71,9 @@ jobs:
       - name: Build with Vercel (includes generated files)
         run: |
           if [ "${{ github.event.inputs.environment }}" == "production" ]; then
-            npx vercel build --prod --archive=tgz
+            npx vercel build --prod
           else
-            npx vercel build --archive=tgz
+            npx vercel build
           fi
         env:
           CHATBLOGR_PAT: ${{ github.event.inputs.pat }}
@@ -85,9 +85,9 @@ jobs:
         id: deploy
         run: |
           if [ "${{ github.event.inputs.environment }}" == "production" ]; then
-            npx vercel deploy --prod --prebuilt --token=${{ github.event.inputs.vercel_token }}
+            npx vercel deploy --prod --prebuilt --token=${{ github.event.inputs.vercel_token }} --archive=tgz
           else
-            npx vercel deploy --prebuilt --token=${{ github.event.inputs.vercel_token }}
+            npx vercel deploy --prebuilt --token=${{ github.event.inputs.vercel_token }} --archive=tgz
           fi
         env:
           VERCEL_ORG_ID: ${{ github.event.inputs.vercel_org_id }}
