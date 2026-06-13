@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { BlogPost } from "@/types";
-import { Layout } from "@/components/blog/Layout";
+import { Layout } from "@/components/Layout";
 import Link from "next/link";
-import { md } from "./md";
-import { Button } from "../Button";
+import { md } from "@/components/md";
+import { Button } from "@/components/Button";
 
 export function BlogPage({
   blogName,

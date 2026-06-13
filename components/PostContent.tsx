@@ -1,7 +1,7 @@
 import { Message } from "@/types";
 import { md } from "./md";
 
-export function ChatContent({
+export function PostContent({
   content,
   title,
   description,

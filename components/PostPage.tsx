@@ -1,11 +1,11 @@
 "use client";
 
-import { Layout } from "@/components/blog/Layout";
+import { Layout } from "@/components/Layout";
 import { useParams } from "next/navigation";
-import { ChatContent } from "./ChatContent";
+import { PostContent } from "@/components/PostContent";
 import { Message } from "@/types";
 
-export function ChatPage({
+export function PostPage({
   blogName,
   content,
   description,
@@ -21,7 +21,7 @@ export function ChatPage({
   return (
     <Layout blogName={blogName}>
       <div className="max-w-[768px] w-full mx-auto">
-        <ChatContent content={content} title={title} description={description} createdAt={createdAt} />
+        <PostContent content={content} title={title} description={description} createdAt={createdAt} />
       </div>
     </Layout>
   );

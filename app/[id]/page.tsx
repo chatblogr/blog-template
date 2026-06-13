@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { ChatPage } from "@/components/blog/ChatPage";
+import { PostPage } from "@/components/PostPage";
 import { getBlog, getPost } from "@/lib/utils";
 
 type Props = Promise<{
@@ -67,5 +67,5 @@ export default async function Page({ params }: { params: Props }) {
   if (post.redirect) {
     redirect("/" + post.redirect);
   }
-  return <ChatPage {...post} />;
+  return <PostPage {...post} />;
 }

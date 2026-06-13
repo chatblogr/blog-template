@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BlogPage } from "@/components/blog/BlogPage";
+import { BlogPage } from "@/components/BlogPage";
 import { getBlog } from "@/lib/utils";
 
 
