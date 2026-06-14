@@ -18,8 +18,8 @@ export async function generateMetadata(
   const { adsenseId } = await getBlog();
   
   return {
-    verification: adsenseId ? {
-      google: adsenseId,
+    other: adsenseId ? {
+      "google-adsense-account": adsenseId,
     } : undefined,
   };
 }
