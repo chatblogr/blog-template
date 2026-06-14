@@ -17,18 +17,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     });
     
-    // Redirect URLs (if any)
-    if (post.redirects) {
-      urls.push(
-        ...post.redirects.map((redirect) => ({
-          url: `${baseUrl}/${redirect}`,
-          lastModified: post.lastModified ? new Date(post.lastModified) : new Date(),
-          changeFrequency: 'weekly',
-          priority: 0.8,
-        }))
-      );
-    }
-    
     return urls;
   });
   
