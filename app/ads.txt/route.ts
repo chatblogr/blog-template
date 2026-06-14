@@ -3,7 +3,10 @@ import { getBlog } from '@/lib/utils';
 export async function GET() {
   const blog = await getBlog();
 
+  console.log('Full blog object:', JSON.stringify(blog, null, 2));
   console.log('adsenseId:', blog.adsenseId);
+  console.log('Has adsenseId property?', 'adsenseId' in blog);
+  console.log('blog keys:', Object.keys(blog));
   
   if (!blog.adsenseId) {
     // Return empty ads.txt if AdSense is not configured
