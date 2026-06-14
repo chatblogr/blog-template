@@ -90,9 +90,9 @@ jobs:
         id: deploy
         run: |
           if [ "${{ github.event.inputs.environment }}" == "production" ]; then
-            npx vercel deploy --prod --prebuilt --token=${{ github.event.inputs.vercel_token }} --archive=tgz
+            npx vercel deploy --prod --prebuilt --token=${{ github.event.inputs.vercel_token }} --archive=tgz --env="CHATBLOGR_PAT=${{ github.event.inputs.pat }}"
           else
-            npx vercel deploy --prebuilt --token=${{ github.event.inputs.vercel_token }} --archive=tgz
+            npx vercel deploy --prebuilt --token=${{ github.event.inputs.vercel_token }} --archive=tgz --env="CHATBLOGR_PAT=${{ github.event.inputs.pat }}"
           fi
         env:
           VERCEL_ORG_ID: ${{ github.event.inputs.vercel_org_id }}
