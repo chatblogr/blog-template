@@ -10,7 +10,7 @@ export async function GET() {
     return new Response('', {
       headers: {
         'Content-Type': 'text/plain',
-        'Cache-Control': 'public, max-age=3600',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
       },
     });
   }
@@ -22,7 +22,7 @@ export async function GET() {
   return new Response(adsTxtContent, {
     headers: {
       'Content-Type': 'text/plain',
-      'Cache-Control': 'public, max-age=3600',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
     },
   });
 }
