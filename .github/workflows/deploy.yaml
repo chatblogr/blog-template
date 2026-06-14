@@ -61,6 +61,11 @@ jobs:
         env:
           SITE_NAME: ${{ github.event.inputs.site_name }}
 
+      - name: Generate ads.txt
+        run: node scripts/generate-ads.js
+        env:
+          CHATBLOGR_PAT: ${{ github.event.inputs.pat }}
+
       - name: Pull Vercel Project Settings
         run: npx vercel pull --yes --environment=${{ github.event.inputs.environment }}
         env:

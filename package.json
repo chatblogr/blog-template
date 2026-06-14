@@ -9,7 +9,8 @@
     "lint": "eslint",
     "deploy": "rm -rf .next .vercel && npx vercel build && npx vercel deploy --prod --prebuilt --archive=tgz",
     "resize": "node ./resize.js",
-    "manifest": "node ./manifest.js"
+    "manifest": "node ./manifest.js",
+    "generate:ads": "node ./scripts/generate-ads.js"
   },
   "dependencies": {
     "@radix-ui/colors": "^3.0.0",
