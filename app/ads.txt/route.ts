@@ -1,0 +1,26 @@
+import { getBlog } from '@/lib/utils';
+
+export async function GET() {
+  const blog = await getBlog();
+  
+  if (!blog.adsenseId) {
+    // Return empty ads.txt if AdSense is not configured
+    return new Response('', {
+      headers: {
+        'Content-Type': 'text/plain',
+        'Cache-Control': 'public, max-age=3600',
+      },
+    });
+  }
+
+  // Generate ads.txt with the AdSense publisher ID
+  // Format: google.com, pub-xxxxxxxxxxxxxxxx, DIRECT, f08c47fec0942fa0
+  const adsTxtContent = `google.com, ${blog.adsenseId}, DIRECT, f08c47fec0942fa0`;
+
+  return new Response(adsTxtContent, {
+    headers: {
+      'Content-Type': 'text/plain',
+      'Cache-Control': 'public, max-age=3600',
+    },
+  });
+}
