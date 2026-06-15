@@ -85,6 +85,7 @@ jobs:
           VERCEL_TOKEN: ${{ github.event.inputs.vercel_token }}
           VERCEL_ORG_ID: ${{ github.event.inputs.vercel_org_id }}
           VERCEL_PROJECT_ID: ${{ github.event.inputs.vercel_project_id }}
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.TURNSTILE_SITE_KEY }}
 
       - name: Deploy to Vercel
         id: deploy

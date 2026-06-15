@@ -52,3 +52,13 @@ export type BlogPost = {
   updatedTime?: number;
   slug: string;
 }
+
+export type Comment = {
+  id: string;
+  text: string;
+  timestamp: Date;
+  commenterName?: string;
+  fromAdmin?: boolean;
+  editedByAdmin?: boolean;
+  replies?: Comment[];
+}

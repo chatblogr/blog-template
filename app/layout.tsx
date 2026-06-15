@@ -63,6 +63,11 @@ export default async function RootLayout({
           href="/images/favicon-16x16.png"
         />
         <link rel="manifest" href="/site.webmanifest" />
+        <script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          async
+          defer
+        ></script>
       </head>
       <body className={`${inter.variable} antialiased`}>
         {analyticsId && (
