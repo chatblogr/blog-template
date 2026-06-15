@@ -16,7 +16,26 @@ function CommentItem({ comment, onReply, depth = 0 }: CommentItemProps) {
   const hasReplies = comment.replies && comment.replies.length > 0;
 
   useEffect(() => {
-    const date = typeof comment.timestamp === 'string' ? new Date(comment.timestamp) : comment.timestamp;
+    let date: Date;
+    
+    if (typeof comment.timestamp === 'string') {
+      // Try to parse the date string
+      const parsedDate = new Date(comment.timestamp);
+      date = isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
+    } else if (comment.timestamp instanceof Date) {
+      date = comment.timestamp;
+    } else if (comment.timestamp && typeof comment.timestamp === 'object') {
+      // Handle Firestore Timestamp format
+      const ts = comment.timestamp as any;
+      if (ts._seconds) {
+        date = new Date(ts._seconds * 1000);
+      } else {
+        date = new Date();
+      }
+    } else {
+      date = new Date();
+    }
+    
     setFormattedDate(date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
