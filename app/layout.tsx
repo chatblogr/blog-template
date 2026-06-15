@@ -67,6 +67,8 @@ export default async function RootLayout({
           src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
           async
           defer
+          onLoad={() => console.log('reCAPTCHA script loaded')}
+          onError={() => console.error('reCAPTCHA script failed to load')}
         ></script>
       </head>
       <body className={`${inter.variable} antialiased`}>
