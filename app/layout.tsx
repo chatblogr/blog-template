@@ -5,6 +5,7 @@ import Script from "next/script";
 import { Inter } from "next/font/google";
 import { getBlog } from "@/lib/utils";
 import { Metadata, ResolvingMetadata } from "next";
+import { RecaptchaScript } from "@/components/RecaptchaScript";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -63,15 +64,9 @@ export default async function RootLayout({
           href="/images/favicon-16x16.png"
         />
         <link rel="manifest" href="/site.webmanifest" />
-        <script
-          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-          async
-          defer
-          onLoad={() => console.log('reCAPTCHA script loaded')}
-          onError={() => console.error('reCAPTCHA script failed to load')}
-        ></script>
       </head>
       <body className={`${inter.variable} antialiased`}>
+        <RecaptchaScript />
         {analyticsId && (
           <>
             <Script
