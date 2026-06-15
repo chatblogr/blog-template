@@ -145,35 +145,20 @@ export function CommentsSection({ postId }: CommentsSectionProps) {
   useEffect(() => {
     let mounted = true;
     
-    console.log('reCAPTCHA init effect started');
-    console.log('NEXT_PUBLIC_RECAPTCHA_SITE_KEY:', process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
-    
     const initRecaptcha = () => {
       if (!mounted) return;
-      
-      console.log('initRecaptcha called, window.grecaptcha:', !!window.grecaptcha);
       
       if (typeof window !== 'undefined' && 
           window.grecaptcha && 
           process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
-        
         // reCAPTCHA v3 is ready, no explicit widget initialization needed
         // We'll execute it when user tries to submit
-        console.log('reCAPTCHA v3 ready');
-      } else {
-        console.log('reCAPTCHA not ready:', {
-          hasWindow: typeof window !== 'undefined',
-          hasGrecaptcha: !!window.grecaptcha,
-          hasSiteKey: !!process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
-          siteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-        });
       }
     };
 
     // Wait for reCAPTCHA script to be loaded
     if (typeof window !== 'undefined') {
       if (window.grecaptcha) {
-        console.log('window.grecaptcha already available');
         // Script already loaded
         const timer = setTimeout(initRecaptcha, 100);
         return () => {
@@ -181,11 +166,9 @@ export function CommentsSection({ postId }: CommentsSectionProps) {
           clearTimeout(timer);
         };
       } else {
-        console.log('Waiting for window.grecaptcha to load...');
         // Wait for script to load
         const checkRecaptcha = setInterval(() => {
           if (window.grecaptcha) {
-            console.log('window.grecaptcha detected!');
             clearInterval(checkRecaptcha);
             initRecaptcha();
           }

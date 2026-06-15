@@ -99,11 +99,8 @@ export async function GET(
       },
     });
 
-    console.log('Response status:', response.status);
-    
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      console.error('Error response:', errorData);
       return NextResponse.json(
         { error: errorData.error || "Failed to fetch comments" },
         { status: response.status },
@@ -113,7 +110,6 @@ export async function GET(
     const data = await response.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error("Error fetching comments:", error);
     return NextResponse.json(
       { error: "Failed to fetch comments" },
       { status: 500 },
@@ -163,7 +159,6 @@ export async function POST(
 
     // Check if bypass API token is configured
     if (!BYPASS_API_TOKEN) {
-      console.error('CHATBLOGR_PAT is not configured');
       return NextResponse.json(
         { error: "Bypass API token not configured" },
         { status: 500 },

@@ -12,7 +12,7 @@ export function RecaptchaScript() {
       script.defer = true;
       
       script.onload = () => {
-        console.log('reCAPTCHA script loaded successfully');
+        // reCAPTCHA script loaded successfully
       };
       
       script.onerror = () => {
