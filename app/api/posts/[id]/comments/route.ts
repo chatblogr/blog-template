@@ -136,7 +136,7 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { text, commenterName, turnstileToken, parentCommentId } = body;
+    const { text, commenterName, recaptchaToken, parentCommentId } = body;
 
     if (!text) {
       return NextResponse.json(
@@ -145,9 +145,9 @@ export async function POST(
       );
     }
 
-    if (!turnstileToken) {
+    if (!recaptchaToken) {
       return NextResponse.json(
-        { error: "Turnstile token is required" },
+        { error: "reCAPTCHA token is required" },
         { status: 400 },
       );
     }
@@ -176,7 +176,7 @@ export async function POST(
     const requestBody = {
       text,
       commenterName,
-      turnstileToken,
+      recaptchaToken,
       parentCommentId,
     };
     

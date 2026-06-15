@@ -125,95 +125,67 @@ export function CommentsSection({ postId }: CommentsSectionProps) {
   const [commentText, setCommentText] = useState("");
   const [commenterName, setCommenterName] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-  const [turnstileError, setTurnstileError] = useState<string | null>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
   
-  const turnstileRef = useRef<HTMLDivElement>(null);
-  const turnstileWidgetId = useRef<string | null>(null);
-  const turnstileTokenRef = useRef<string | null>(null);
+  const recaptchaWidgetId = useRef<string | null>(null);
+  const recaptchaTokenRef = useRef<string | null>(null);
 
   // Sync token ref with state
   useEffect(() => {
-    turnstileTokenRef.current = turnstileToken;
-  }, [turnstileToken]);
+    recaptchaTokenRef.current = recaptchaToken;
+  }, [recaptchaToken]);
 
   // Fetch comments on mount
   useEffect(() => {
     fetchComments();
   }, [postId]);
 
-  // Initialize Turnstile (invisible mode)
+  // Initialize reCAPTCHA v3
   useEffect(() => {
     let mounted = true;
     
-    const initTurnstile = () => {
+    const initRecaptcha = () => {
       if (!mounted) return;
       
       if (typeof window !== 'undefined' && 
-          window.turnstile && 
-          turnstileRef.current && 
-          !turnstileWidgetId.current &&
-          process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+          window.grecaptcha && 
+          process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
         
-        try {
-          const widgetId = window.turnstile.render(turnstileRef.current, {
-            sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
-            size: 'invisible',
-            callback: (token: string) => {
-              if (mounted) {
-                setTurnstileToken(token);
-                turnstileTokenRef.current = token;
-                setTurnstileError(null);
-              }
-            },
-            'error-callback': (error: any) => {
-              if (mounted) {
-                setTurnstileError('Turnstile validation failed. Please try again.');
-                setTurnstileToken(null);
-                turnstileTokenRef.current = null;
-              }
-            },
-          });
-          if (mounted) {
-            turnstileWidgetId.current = widgetId;
-          }
-        } catch (error) {
-          if (mounted) {
-            setTurnstileError('Failed to initialize Turnstile. Please refresh the page.');
-          }
-        }
+        // reCAPTCHA v3 is ready, no explicit widget initialization needed
+        // We'll execute it when user tries to submit
+        console.log('reCAPTCHA v3 ready');
       }
     };
 
-    // Wait for Turnstile script to be loaded
+    // Wait for reCAPTCHA script to be loaded
     if (typeof window !== 'undefined') {
-      if (window.turnstile) {
+      if (window.grecaptcha) {
         // Script already loaded
-        // Small delay to ensure DOM is ready
-        const timer = setTimeout(initTurnstile, 100);
+        const timer = setTimeout(initRecaptcha, 100);
         return () => {
           mounted = false;
           clearTimeout(timer);
         };
       } else {
         // Wait for script to load
-        const checkTurnstile = setInterval(() => {
-          if (window.turnstile) {
-            clearInterval(checkTurnstile);
-            initTurnstile();
+        const checkRecaptcha = setInterval(() => {
+          if (window.grecaptcha) {
+            clearInterval(checkRecaptcha);
+            initRecaptcha();
           }
         }, 100);
 
         const timeout = setTimeout(() => {
-          clearInterval(checkTurnstile);
+          clearInterval(checkRecaptcha);
           if (mounted) {
-            setTurnstileError('Turnstile failed to load. Please refresh the page.');
+            setRecaptchaError('reCAPTCHA failed to load. Please refresh the page.');
           }
         }, 5000); // 5 second timeout
 
         return () => {
           mounted = false;
-          clearInterval(checkTurnstile);
+          clearInterval(checkRecaptcha);
           clearTimeout(timeout);
         };
       }
@@ -221,20 +193,6 @@ export function CommentsSection({ postId }: CommentsSectionProps) {
 
     return () => {
       mounted = false;
-    };
-  }, []);
-
-  // Cleanup Turnstile widget on unmount
-  useEffect(() => {
-    return () => {
-      if (turnstileWidgetId.current && window.turnstile) {
-        try {
-          window.turnstile.remove(turnstileWidgetId.current);
-        } catch (error) {
-          // Silently fail on cleanup
-        }
-        turnstileWidgetId.current = null;
-      }
     };
   }, []);
 
@@ -266,87 +224,38 @@ export function CommentsSection({ postId }: CommentsSectionProps) {
     e.preventDefault();
 
     if (!commentText.trim()) {
-      setTurnstileError('Please enter a comment.');
+      setRecaptchaError('Please enter a comment.');
       return;
     }
 
     setSubmitting(true);
     setError(null);
-    setTurnstileError(null);
+    setRecaptchaError(null);
 
-    // Try to initialize Turnstile if not already done
-    if (!turnstileWidgetId.current && typeof window !== 'undefined' && window.turnstile && turnstileRef.current && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+    // Execute reCAPTCHA v3 and get token
+    if (typeof window !== 'undefined' && 
+        window.grecaptcha && 
+        process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
+      
       try {
-        const widgetId = window.turnstile.render(turnstileRef.current, {
-          sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
-          size: 'invisible',
-          callback: (token: string) => {
-            setTurnstileToken(token);
-            turnstileTokenRef.current = token;
-            setTurnstileError(null);
-          },
-          'error-callback': (error: any) => {
-            setTurnstileError('Turnstile validation failed. Please try again.');
-            setTurnstileToken(null);
-            turnstileTokenRef.current = null;
-          },
-        });
-        turnstileWidgetId.current = widgetId;
-      } catch (error) {
-        setTurnstileError('Failed to initialize Turnstile. Please refresh the page.');
-        setSubmitting(false);
-        return;
-      }
-    }
-
-    // Small delay to ensure widget is ready
-    await new Promise(resolve => setTimeout(resolve, 100));
-
-    // Trigger invisible Turnstile challenge
-    if (turnstileWidgetId.current && window.turnstile) {
-      try {
-        window.turnstile.execute(turnstileWidgetId.current);
+        const token = await window.grecaptcha.execute(
+          process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+          { action: 'submit_comment' }
+        );
         
-        // Wait for the token to be generated (callback will set turnstileToken)
-        // Poll for token with timeout
-        let attempts = 0;
-        const maxAttempts = 100; // 10 seconds timeout
-        
-        const waitForToken = setInterval(() => {
-          attempts++;
-          
-          if (turnstileTokenRef.current) {
-            clearInterval(waitForToken);
-            submitComment();
-          } else if (attempts >= maxAttempts) {
-            clearInterval(waitForToken);
-            setTurnstileError('Turnstile validation timed out. Please try again.');
-            setSubmitting(false);
-            
-            // Reset Turnstile widget
-            if (turnstileWidgetId.current && window.turnstile) {
-              window.turnstile.reset(turnstileWidgetId.current);
-            }
-          }
-        }, 100);
+        // Submit with reCAPTCHA token
+        submitComment(token);
       } catch (error) {
-        setTurnstileError('Failed to execute Turnstile. Please try again.');
+        setRecaptchaError('Failed to execute reCAPTCHA. Please try again.');
         setSubmitting(false);
       }
     } else {
-      setTurnstileError('Turnstile not initialized. Please refresh the page.');
+      setRecaptchaError('reCAPTCHA not initialized. Please refresh the page.');
       setSubmitting(false);
     }
   };
 
-  const submitComment = async () => {
-    const token = turnstileToken || turnstileTokenRef.current;
-    
-    if (!token) {
-      setTurnstileError('Security verification failed. Please try again.');
-      setSubmitting(false);
-      return;
-    }
+  const submitComment = async (token: string) => {
 
     try {
       const response = await fetch(`/api/posts/${postId}/comments`, {
@@ -357,7 +266,7 @@ export function CommentsSection({ postId }: CommentsSectionProps) {
         body: JSON.stringify({
           text: commentText,
           commenterName: commenterName.trim() || undefined,
-          turnstileToken: token,
+          recaptchaToken: token,
           parentCommentId: replyingTo,
         }),
       });
@@ -401,12 +310,7 @@ export function CommentsSection({ postId }: CommentsSectionProps) {
       setCommentText('');
       setCommenterName('');
       setReplyingTo(null);
-      setTurnstileToken(null);
-      
-      // Reset Turnstile widget
-      if (turnstileWidgetId.current && window.turnstile) {
-        window.turnstile.reset(turnstileWidgetId.current);
-      }
+      setRecaptchaToken(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to post comment');
     } finally {
@@ -446,9 +350,9 @@ export function CommentsSection({ postId }: CommentsSectionProps) {
           </div>
         )}
 
-        {turnstileError && (
+        {recaptchaError && (
           <div className="bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded-lg mb-4">
-            {turnstileError}
+            {recaptchaError}
           </div>
         )}
 
@@ -498,8 +402,7 @@ export function CommentsSection({ postId }: CommentsSectionProps) {
             />
           </div>
 
-          {/* Invisible Turnstile */}
-          <div ref={turnstileRef} className="mb-4"></div>
+          {/* reCAPTCHA v3 is invisible, executed on submit */}
 
           <button
             type="submit"

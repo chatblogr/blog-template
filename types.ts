@@ -1,7 +1,11 @@
 declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    turnstile: any;
+    grecaptcha: {
+      ready: (callback: () => void) => void;
+      execute: (siteKey: string, options: any) => Promise<string>;
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     particlesJS: {
       load: (id: string, path: string, callback?: () => void) => void;
     };

@@ -32,14 +32,14 @@ export function BlogPage({
                       {new Date(post.updatedTime).toLocaleString()}
                     </span>
                   )}
-                  <p className="text-gray-600 text-md mt-4">
+                  <div className="text-gray-600 text-md mt-4">
                     <div
                       className="message"
                       dangerouslySetInnerHTML={{
                         __html: md.render(post.description ?? ""),
                       }}
                     />
-                  </p>
+                  </div>
                   <div className="flex justify-end mt-4">
                     <Button>Read More &gt;</Button>
                   </div>
