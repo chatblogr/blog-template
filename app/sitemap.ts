@@ -18,7 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       
       // Main post URL
       urls.push({
-        url: `${baseUrl}/${post.slug}`,
+        url: `${baseUrl}/${post.slug}/`,
         lastModified: post.lastModified ? new Date(post.lastModified) : new Date(),
         changeFrequency: 'weekly',
         priority: 0.8,
@@ -30,7 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Add the homepage
     return [
       {
-        url: baseUrl,
+        url: `${baseUrl}/`,
         lastModified: new Date(),
         changeFrequency: 'daily',
         priority: 1,
