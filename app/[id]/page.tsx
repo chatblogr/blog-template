@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { PostPage } from "@/components/PostPage";
+import { ArchivedPostPage } from "@/components/ArchivedPostPage";
 import { getBlog, getPost } from "@/lib/utils";
 
 type Props = Promise<{
@@ -16,20 +17,22 @@ export async function generateStaticParams() {
       return [];
     }
     
-    return blog.posts.flatMap((post: { slug: string; redirects: string[] }) => {
-      const posts = [];
-      if (post.redirects) {
-        posts.push(
-          ...post.redirects.map((redirect) => ({
-            id: redirect,
-          })),
-        );
-      }
-      posts.push({
-        id: post.slug,
+    return blog.posts
+      .filter((post: { type?: string }) => post.type === "kb" || post.type === "ex")
+      .flatMap((post: { slug: string; redirects: string[] }) => {
+        const posts = [];
+        if (post.redirects) {
+          posts.push(
+            ...post.redirects.map((redirect) => ({
+              id: redirect,
+            })),
+          );
+        }
+        posts.push({
+          id: post.slug,
+        });
+        return posts;
       });
-      return posts;
-    });
   } catch (error) {
     console.error('Error generating static params:', error);
     return [];
@@ -75,7 +78,17 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: Props }) {
-  const post = await getPost((await params).id);
+  const id = (await params).id;
+  const blog = await getBlog();
+  const postType = blog?.posts?.find(
+    (p: { slug: string; type?: string }) => p.slug === id
+  )?.type;
+
+  if (postType === "ar") {
+    return <ArchivedPostPage id={id} />;
+  }
+
+  const post = await getPost(id);
   if (post.redirect) {
     redirect("/" + post.redirect);
   }
