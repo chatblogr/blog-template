@@ -11,7 +11,7 @@ export function BlogPage({
   blogName: string;
 }) {
   const kbPosts = posts.filter((post) => post.type === "kb");
-  const exPosts = posts.filter((post) => post.type === "ex");
+  const exPosts = posts.filter((post) => !post.type || post.type === "ex");
 
   return (
     <Layout blogName={blogName}>

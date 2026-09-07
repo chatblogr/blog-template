@@ -13,7 +13,7 @@ export default async function ExplorePage() {
   const blog = await getBlog();
   const posts =
     blog?.posts?.filter(
-      (post: { type?: string }) => post.type === "ex",
+      (post: { type?: string }) => !post.type || post.type === "ex",
     ) ?? [];
   return (
     <SectionPage blogName={blog?.blogName ?? ""} title="Explorations" posts={posts} />
