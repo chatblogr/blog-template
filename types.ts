@@ -47,6 +47,7 @@ export type Blog = {
   defaultVisibility?: boolean;
   analyticsId?: string;
   adsenseId?: string;
+  customDomain?: string;
 }
 
 export type BlogPost = {
@@ -55,6 +56,8 @@ export type BlogPost = {
   description: string;
   updatedTime?: number;
   slug: string;
+  type?: "kb" | "ex" | "ar";
+  redirects?: string[];
 }
 
 export type Comment = {
