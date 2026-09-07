@@ -13,7 +13,7 @@ export function PostsGrid({
 }) {
   const hasMore = viewMoreHref && posts.length > MAX_CARDS;
 
-  const visiblePosts = hasMore ? posts.slice(0, MAX_CARDS - 2) : posts;
+  const visiblePosts = hasMore ? posts.slice(0, MAX_CARDS - 1) : posts;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
