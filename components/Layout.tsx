@@ -26,6 +26,7 @@ const NAV_LINKS = [
   { href: "/kb", label: "Knowledge Base" },
   { href: "/explore", label: "Explore" },
   { href: "/archived", label: "Archived" },
+  { href: "/recent", label: "Recent" },
 ];
 
 export function Layout({ children, blogName }: PropsWithChildren<LayoutProps>) {
