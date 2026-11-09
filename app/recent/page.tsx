@@ -6,16 +6,18 @@ import { BlogPost } from "@/types";
 export async function generateMetadata(): Promise<Metadata> {
   const blog = await getBlog();
   return {
-    title: blog?.blogName ? `Recent | ${blog.blogName}` : "Recent",
+    title: blog?.blogName ? `Recents | ${blog.blogName}` : "Recents",
   };
 }
 
 export default async function RecentPage() {
   const blog = await getBlog();
-  const posts = [...(blog?.posts ?? [])].sort(
-    (a: BlogPost, b: BlogPost) => (b.updatedTime ?? 0) - (a.updatedTime ?? 0),
-  );
+  const posts = [...(blog?.posts ?? [])]
+    .filter((post: BlogPost) => post.type !== "ar")
+    .sort(
+      (a: BlogPost, b: BlogPost) => (b.updatedTime ?? 0) - (a.updatedTime ?? 0),
+    );
   return (
-    <SectionPage blogName={blog?.blogName ?? ""} title="Recent" posts={posts} />
+    <SectionPage blogName={blog?.blogName ?? ""} title="Recents" posts={posts} />
   );
 }

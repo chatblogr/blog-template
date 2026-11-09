@@ -1,5 +1,5 @@
 import { Layout } from "@/components/Layout";
-import { PostsGrid } from "@/components/PostsGrid";
+import { PostIndex } from "@/components/PostList";
 import { BlogPost } from "@/types";
 
 export function SectionPage({
@@ -11,16 +11,13 @@ export function SectionPage({
   title: string;
   posts: BlogPost[];
 }) {
+  const sorted = [...posts].sort(
+    (a, b) => (b.updatedTime ?? 0) - (a.updatedTime ?? 0),
+  );
+
   return (
     <Layout blogName={blogName}>
-      <div className="w-full max-w-[768px] mx-auto pb-4 px-6">
-        <h1 className="text-3xl font-bold text-gray-900 pt-6 mb-6">{title}</h1>
-        {posts.length === 0 ? (
-          <p className="text-gray-500">No posts available.</p>
-        ) : (
-          <PostsGrid posts={posts} />
-        )}
-      </div>
+      <PostIndex title={title} posts={sorted} />
     </Layout>
   );
 }
