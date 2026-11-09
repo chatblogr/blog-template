@@ -1,134 +1,68 @@
 "use client";
-import { PropsWithChildren, useState, useSyncExternalStore } from "react";
+import { PropsWithChildren } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface LayoutProps {
   blogName: string;
 }
 
-function getBaseDomain(hostname: string): string | null {
-  const parts = hostname.split(".");
-  if (parts.length >= 3) {
-    return parts.slice(1).join(".");
-  }
-  return null;
-}
-
-function getMainOrigin(): string | null {
-  if (typeof window === "undefined") return null;
-  const base = getBaseDomain(window.location.hostname);
-  return base ? `${window.location.protocol}//${base}` : null;
-}
-
-const emptySubscribe = () => () => {};
-
 const NAV_LINKS = [
-  { href: "/kb", label: "Knowledge Base" },
-  { href: "/explore", label: "Explore" },
+  { href: "/", label: "Recents" },
   { href: "/archived", label: "Archived" },
-  { href: "/recent", label: "Recent" },
 ];
 
+function normalizePath(pathname: string) {
+  if (pathname.length > 1 && pathname.endsWith("/")) {
+    return pathname.slice(0, -1);
+  }
+  return pathname || "/";
+}
+
 export function Layout({ children, blogName }: PropsWithChildren<LayoutProps>) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const mainOrigin = useSyncExternalStore(
-    emptySubscribe,
-    getMainOrigin,
-    () => null,
-  );
+  const pathname = normalizePath(usePathname() ?? "/");
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="bg-slate-50 border-b border-gray-200 px-6 fixed h-20 flex items-center justify-between w-full z-50">
-        <Link href="/">
-          <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis max-w-[45vw] sm:max-w-none">
-            {blogName}
-          </h1>
-        </Link>
-        <nav className="hidden sm:flex items-center gap-6">
-          {mainOrigin && (
-            <Link
-              href={mainOrigin}
-              className="text-sm font-medium text-gray-700 hover:text-gray-900"
-            >
-              Home
-            </Link>
-          )}
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-gray-700 hover:text-gray-900"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-        <button
-          className="sm:hidden flex items-center justify-center h-10 w-10 rounded-md text-gray-700 hover:bg-gray-200"
-          onClick={() => setMenuOpen((open) => !open)}
-          aria-label="Toggle menu"
-          aria-expanded={menuOpen}
-        >
-          {menuOpen ? (
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          ) : (
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          )}
-        </button>
+    <div className="flex min-h-screen flex-col bg-white">
+      <header className="fixed top-0 z-50 w-full border-b border-gray-200/80 bg-white/85 backdrop-blur-md">
+        <div className="mx-auto flex h-16 w-full max-w-3xl items-center justify-between gap-4 px-6">
+          <Link href="/" className="min-w-0">
+            <span className="block truncate text-lg font-semibold tracking-tight text-gray-950">
+              {blogName}
+            </span>
+          </Link>
+          <nav className="flex shrink-0 items-center rounded-full bg-gray-100 p-1">
+            {NAV_LINKS.map((link) => {
+              const active =
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                    active
+                      ? "bg-white text-gray-950 shadow-sm"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
       </header>
-      {menuOpen && (
-        <nav className="sm:hidden fixed top-20 left-0 right-0 bg-slate-50 border-b border-gray-200 z-50 px-6 py-4 flex flex-col gap-4">
-          {mainOrigin && (
-            <Link
-              href={mainOrigin}
-              className="text-base font-medium text-gray-700 hover:text-gray-900"
-            >
-              Home
-            </Link>
-          )}
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-base font-medium text-gray-700 hover:text-gray-900"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-      )}
-      <main className="px-0 pt-20 pb-4 flex-1">{children}</main>
-      <footer className="bg-black text-white text-center py-4 mt-6">
-        <span className="text-gray-300">Made with </span>
+      <main className="flex-1 pt-16">{children}</main>
+      <footer className="mt-4 border-t border-gray-200 py-8 text-center text-sm text-gray-500">
+        <span>Made with </span>
         <a
           href="https://chatblogr.com"
           target="_blank"
-          className="hover:border-b border-white"
+          rel="noreferrer"
+          className="font-medium text-gray-800 underline decoration-gray-300 underline-offset-4 hover:decoration-gray-800"
         >
           chatblogr.com
         </a>

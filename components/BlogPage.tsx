@@ -1,24 +1,23 @@
-"use client";
 import { Layout } from "@/components/Layout";
-import { PostSection } from "@/components/PostSection";
+import { PostIndex } from "@/components/PostList";
 import { BlogPost } from "@/types";
 
 export function BlogPage({
   blogName,
   posts,
+  description,
 }: {
   posts: BlogPost[];
   blogName: string;
+  description?: string;
 }) {
-  const kbPosts = posts.filter((post) => post.type === "kb");
-  const exPosts = posts.filter((post) => !post.type || post.type === "ex");
+  const recentPosts = [...posts]
+    .filter((post) => post.type !== "ar")
+    .sort((a, b) => (b.updatedTime ?? 0) - (a.updatedTime ?? 0));
 
   return (
     <Layout blogName={blogName}>
-      <div className="w-full max-w-[768px] mx-auto flex flex-col gap-8 pb-4 px-6">
-        <PostSection title="Knowledge Base" posts={kbPosts} viewMoreHref="/kb" />
-        <PostSection title="Explorations" posts={exPosts} viewMoreHref="/explore" />
-      </div>
+      <PostIndex title="Recents" description={description} posts={recentPosts} />
     </Layout>
   );
 }

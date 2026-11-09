@@ -66,6 +66,7 @@ export default async function Page() {
     <BlogPage
       posts={blog.posts}
       blogName={blog.blogName}
+      description={blog.description}
     />
   );
 }
