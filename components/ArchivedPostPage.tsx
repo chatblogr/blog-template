@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import { PostPage } from "@/components/PostPage";
 
-export function ArchivedPostPage({ id }: { id: string }) {
+export function ArchivedPostPage({
+  id,
+  blogDescription,
+}: {
+  id: string;
+  blogDescription?: string;
+}) {
   const [post, setPost] = useState<{
     blogName: string;
     content: string;
@@ -31,5 +37,11 @@ export function ArchivedPostPage({ id }: { id: string }) {
     return <div className="max-w-[768px] w-full mx-auto p-8 text-center">Loading...</div>;
   }
 
-  return <PostPage {...post} />;
+  return (
+    <PostPage
+      {...post}
+      blogDescription={blogDescription}
+      backHref="/archived"
+    />
+  );
 }

@@ -16,8 +16,8 @@ export function BlogPage({
     .sort((a, b) => (b.updatedTime ?? 0) - (a.updatedTime ?? 0));
 
   return (
-    <Layout blogName={blogName}>
-      <PostIndex title="Recents" description={description} posts={recentPosts} />
+    <Layout blogName={blogName} description={description}>
+      <PostIndex title="Recents" posts={recentPosts} />
     </Layout>
   );
 }

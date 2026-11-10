@@ -54,12 +54,12 @@ export default async function Page({ params }: { params: Props }) {
   )?.type;
 
   if (postType === "ar") {
-    return <ArchivedPostPage id={id} />;
+    return <ArchivedPostPage id={id} blogDescription={blog?.description} />;
   }
 
   const post = await getPost(id);
   if (post.redirect) {
     redirect("/" + post.redirect);
   }
-  return <PostPage {...post} />;
+  return <PostPage {...post} blogDescription={blog?.description} />;
 }

@@ -51,20 +51,20 @@ export function PostContent({
     <div className="px-6 pt-4">
       <div className="py-2 border-b border-gray-300 flex items-center">
         {isValidDate && formattedDate && (
-          <div className="mr-4 flex flex-col items-center bg-gray-100 rounded-lg p-2 min-w-[80px]">
-            <div className="text-xs text-gray-600 uppercase font-medium pb-1 border-b border-gray-300">
+          <div className="mr-4 flex flex-col items-center bg-[#efe6d8] rounded-lg p-2 min-w-[88px]">
+            <div className="text-sm text-stone-600 uppercase font-medium pb-1 border-b border-[#e0d6c6]">
               {formattedDate.month}
             </div>
-            <div className="text-2xl font-bold text-gray-900 pt-1">
+            <div className="text-3xl font-bold text-stone-950 pt-1">
               {formattedDate.day}
             </div>
           </div>
         )}
-        <span className="font-bold text-black text-xl min-[480px]:text-2xl lg:text-3xl">
+        <span className="font-bold text-stone-950 text-2xl min-[480px]:text-3xl lg:text-4xl">
           {title}
         </span>
       </div>
-      <p className="italic text-gray-600 mt-2 mb-6">
+      <p className="italic text-stone-600 text-lg mt-3 mb-6">
         {description}
       </p>
       <div

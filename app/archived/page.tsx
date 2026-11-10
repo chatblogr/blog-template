@@ -16,6 +16,11 @@ export default async function ArchivedPage() {
       (post: { type?: string }) => post.type === "ar",
     ) ?? [];
   return (
-    <SectionPage blogName={blog?.blogName ?? ""} title="Archived" posts={posts} />
+    <SectionPage
+      blogName={blog?.blogName ?? ""}
+      description={blog?.description}
+      title="Archived"
+      posts={posts}
+    />
   );
 }

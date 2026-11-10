@@ -2,8 +2,8 @@
 @import "@radix-ui/themes/styles.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f3ea;
+  --foreground: #1c1917;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -72,16 +72,16 @@ body {
    Core layout – keep the reading column at a comfortable width
    ------------------------------------------------------------------ */
 .message {
-  /* Center the post and limit the line‑length */
+  /* Center the post and limit the line-length */
   max-width: 720px;
-  margin: 2rem auto;         /* vertical spacing & centering */
-  padding: 0;          /* breathing room on narrow screens */
-  font-family: system-ui, -apple-system, BlinkMacSystemFont,
+  margin: 2rem auto;
+  padding: 0;
+  font-family: var(--font-inter), Inter, system-ui, -apple-system, BlinkMacSystemFont,
                "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 1rem;            /* 16 px base */
-  line-height: 1.68;          /* comfortable vertical rhythm */
-  color: var(--txt-primary, #212529);
-  background: var(--bg-primary, #fff);
+  font-size: 1.1875rem;
+  line-height: 1.7;
+  color: var(--txt-primary, #1c1917);
+  background-color: transparent;
 }
 
 /* ------------------------------------------------------------------

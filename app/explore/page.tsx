@@ -16,6 +16,11 @@ export default async function ExplorePage() {
       (post: { type?: string }) => !post.type || post.type === "ex",
     ) ?? [];
   return (
-    <SectionPage blogName={blog?.blogName ?? ""} title="Explorations" posts={posts} />
+    <SectionPage
+      blogName={blog?.blogName ?? ""}
+      description={blog?.description}
+      title="Explorations"
+      posts={posts}
+    />
   );
 }
