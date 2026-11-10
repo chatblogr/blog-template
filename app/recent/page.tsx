@@ -18,6 +18,11 @@ export default async function RecentPage() {
       (a: BlogPost, b: BlogPost) => (b.updatedTime ?? 0) - (a.updatedTime ?? 0),
     );
   return (
-    <SectionPage blogName={blog?.blogName ?? ""} title="Recents" posts={posts} />
+    <SectionPage
+      blogName={blog?.blogName ?? ""}
+      description={blog?.description}
+      title="Recents"
+      posts={posts}
+    />
   );
 }

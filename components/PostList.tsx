@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SectionNav } from "@/components/SectionNav";
 import { BlogPost } from "@/types";
 
 function toDate(value?: number) {
@@ -32,26 +33,26 @@ function excerpt(description?: string) {
 
 export function PostList({ posts }: { posts: BlogPost[] }) {
   return (
-    <ol className="border-t border-gray-200">
+    <ol className="border-t border-[#e6dfd2]">
       {posts.map((post) => {
         const date = toDate(post.updatedTime);
         const summary = excerpt(post.description);
         return (
-          <li key={post.slug} className="border-b border-gray-200">
-            <Link href={`/${post.slug}`} className="group block py-7">
+          <li key={post.slug} className="border-b border-[#e6dfd2]">
+            <Link href={`/${post.slug}`} className="group block py-8">
               {date && (
                 <time
                   dateTime={date.toISOString()}
-                  className="text-xs font-medium uppercase tracking-[0.16em] text-gray-400"
+                  className="text-sm font-medium uppercase tracking-[0.16em] text-stone-400"
                 >
                   {formatDate(post.updatedTime)}
                 </time>
               )}
-              <h2 className="mt-2 text-xl font-semibold tracking-tight text-gray-950 transition-colors group-hover:text-indigo-700 sm:text-[1.35rem]">
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-stone-950 transition-colors group-hover:text-indigo-700 sm:text-3xl">
                 {post.title}
               </h2>
               {summary && (
-                <p className="mt-2 line-clamp-2 max-w-2xl text-[15px] leading-relaxed text-gray-600">
+                <p className="mt-3 line-clamp-2 max-w-2xl text-lg leading-relaxed text-stone-600">
                   {summary}
                 </p>
               )}
@@ -65,27 +66,21 @@ export function PostList({ posts }: { posts: BlogPost[] }) {
 
 export function PostIndex({
   title,
-  description,
   posts,
 }: {
   title: string;
-  description?: string;
   posts: BlogPost[];
 }) {
   return (
-    <div className="mx-auto w-full max-w-3xl px-6 pb-10 pt-12 sm:pt-16">
-      <header className="mb-8 sm:mb-10">
-        <h1 className="text-3xl font-semibold tracking-tight text-gray-950 sm:text-4xl">
+    <div className="mx-auto w-full max-w-3xl px-6 pb-12 pt-10 sm:pt-12">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 sm:mb-10">
+        <h1 className="text-3xl font-semibold tracking-tight text-stone-950 sm:text-4xl">
           {title}
         </h1>
-        {description ? (
-          <p className="mt-3 max-w-2xl text-lg leading-relaxed text-gray-600">
-            {description}
-          </p>
-        ) : null}
-      </header>
+        <SectionNav />
+      </div>
       {posts.length === 0 ? (
-        <p className="text-gray-500">No posts yet.</p>
+        <p className="text-lg text-stone-500">No posts yet.</p>
       ) : (
         <PostList posts={posts} />
       )}

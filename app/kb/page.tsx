@@ -16,6 +16,11 @@ export default async function KBPage() {
       (post: { type?: string }) => post.type === "kb",
     ) ?? [];
   return (
-    <SectionPage blogName={blog?.blogName ?? ""} title="Knowledge Base" posts={posts} />
+    <SectionPage
+      blogName={blog?.blogName ?? ""}
+      description={blog?.description}
+      title="Knowledge Base"
+      posts={posts}
+    />
   );
 }
